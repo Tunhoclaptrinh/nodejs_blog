@@ -1,17 +1,17 @@
 const Course = require('../models/Course')
+const { multipleMogooseToObject } = require('../../utils/mogoose')
 class SiteController {
 
   // [GET] /home or /
-  async index(req, res) {
-    try {
-      const courses = await Course.find({});
-      res.json(courses);
-      //  res.render('home', { courses });
-      // res.render("home")
-    } catch (err) {
-      res.status(400).json({ error: 'ERROR!!!' });
-    }
+  async index(req, res, next) {
+    Course.find({})
+      .then(courses => res.render("home", {
+        title: 'TEST TITLE',
+        courses: multipleMogooseToObject(courses)
+      }))
+      .catch(next);
   }
+
 
 
 
