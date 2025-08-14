@@ -26,7 +26,8 @@
   "homepage": "https://github.com/Tunhoclaptrinh/nodejs_blog#readme",
   "dependencies": {
     "express": "^5.1.0",
-    "express-handlebars": "^8.0.3"
+    "express-handlebars": "^8.0.3",
+    "mongoose": "^8.17.1"
   },
   "devDependencies": {
     "morgan": "^1.10.1",
