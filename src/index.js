@@ -23,11 +23,11 @@ app.use(morgan('combined'))
 // Template engine
 app.engine('hbs', engine({ extname: '.hbs' }));  // Dùng engine()
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources/views')); // Thư mục views
+app.set('views', path.join(__dirname, 'resources', 'views')); // Thư mục views
 
 // Route init
 route(app)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`App listening on port ${port}`)
 })
