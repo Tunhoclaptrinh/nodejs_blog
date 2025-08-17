@@ -25,10 +25,11 @@
   },
   "homepage": "https://github.com/Tunhoclaptrinh/nodejs_blog#readme",
   "dependencies": {
-    "express": "^5.1.0",
+    "express": "^4.21.2",
     "express-handlebars": "^8.0.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.17.1",
+    "mongoose-delete": "^1.0.2",
     "mongoose-slug-updater": "^3.3.0"
   },
   "devDependencies": {

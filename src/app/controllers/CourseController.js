@@ -20,11 +20,10 @@ class CourseController {
   store(req, res, next) {
     // res.render('courses/store')
 
-    const formData = req.body
-    formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
+    req.body.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
     const course = new Course(req.body)
     course.save()
-      .then(() => res.redirect(`/`))
+      .then(() => res.redirect(`/me/stored/courses`))
       .catch(err => {
         next(err)
       })
@@ -50,7 +49,24 @@ class CourseController {
 
   // [DELETE] /course/:id
   destroy(req, res, next) {
+    Course.delete({ _id: req.params.id })
+      .then(() => res.redirect('/me/stored/courses'))
+      .catch(next);
+  }
+
+  // [DELETE] /course/:id/force
+  forceDestroy(req, res, next) {
     Course.deleteOne({ _id: req.params.id })
+      .then(() => res.redirect('/me/stored/courses'))
+      .catch(next);
+  }
+
+  // [PATCH] /course/:id/restore
+  restore(req, res, next) {
+    Course.restore({ _id: req.params.id })
+      // cách sửa lại cho ae restore nhưng trong thùng rác không mất dữ liệu
+      // vì func restore không tự động thêm field deleted: false nên thêm thủ công lại là xong
+      .then(() => { return Course.updateOne({ _id: req.params.id }, { deleted: false }); })
       .then(() => res.redirect('/me/stored/courses'))
       .catch(next);
   }
