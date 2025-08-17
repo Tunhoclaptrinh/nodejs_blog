@@ -4,9 +4,9 @@
     <a href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
   </div>
 
-  <div class="mt-4 d-flex align-items-center" >
+  <div class="mt-4 d-flex align-items-center">
     <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
-    <label class="form-check-label" for="checkbox-all" >
+    <label class="form-check-label" for="checkbox-all">
       Chọn tất cả
     </label>
 
@@ -15,9 +15,8 @@
       <option value="delete">Xóa</option>
     </select>
 
-    <button class="btn btn-primary btn-sm disabled check-all-submit-btn">Thực hiện</button>
+    <button type="submit" class="btn btn-primary btn-sm check-all-submit-btn" disabled>Thực hiện</button>
   </div>
-
 
   <table class="table mt-4">
     <thead>
@@ -32,7 +31,7 @@
       {{#each courses}}
         <tr>
           <td>
-            <input class="form-check-input" type="checkbox" name="coureIds[]" value="{{this._id}}" >
+            <input class="form-check-input" type="checkbox" name="coureIds[]" value="{{this._id}}">
           </td>
           <th scope="row">{{sum @index 1}}</th>
           <td>{{this.name}}</td>
@@ -49,12 +48,11 @@
             >
               Xóa
             </a>
-
           </td>
         </tr>
       {{else}}
         <tr>
-          <td colspan="5" class="text-center">
+          <td colspan="6" class="text-center">
             Bạn chưa đăng khóa học nào.
             <a href="/courses/create">Đăng khóa học</a>
           </td>
@@ -97,8 +95,6 @@
     const courseItemCheckboxes = document.querySelectorAll('input[name="coureIds[]"]');
     const checkAllSubmitBtn = document.getElementsByClassName('check-all-submit-btn')[0];
 
-    
-
     // Khi modal hiển thị
     deleteModal.addEventListener('show.bs.modal', function (event) {
       const button = event.relatedTarget; // nút bấm mở modal
@@ -127,24 +123,30 @@
       };
     });
 
-    checkAllSubmitBtn.onsubmit = function (e) {
+    containerForm.onsubmit = function (e) {
       const isSubmitable = document.querySelectorAll('input[name="coureIds[]"]:checked').length > 0;
+      const actionSelected = containerForm.action.value;
 
-      if (!isSubmitable) {
+      if (!isSubmitable || !actionSelected) {
         e.preventDefault();
       }
     };
 
     // Re-render Check all submit button
     function renderCheckAllSubmitBtn() {
-      var checkedCount = document.querySelectorAll('input[name="coureIds[]"]:checked').length;
+      const checkedCount = document.querySelectorAll('input[name="coureIds[]"]:checked').length;
+      const actionSelected = containerForm.action.value;
 
-      if (checkedCount > 0) {
-        checkAllSubmitBtn.classList.remove('disabled');  // bỏ class disabled
+      if (checkedCount > 0 && actionSelected) {
+        checkAllSubmitBtn.disabled = false;
       } else {
-        checkAllSubmitBtn.classList.add('disabled');     // thêm lại class disabled
+        checkAllSubmitBtn.disabled = true;
       }
     }
+
+    // Lắng nghe sự thay đổi của dropdown action
+    containerForm.action.addEventListener('change', function() {
+      renderCheckAllSubmitBtn();
+    });
   });
 </script>
-

@@ -16,7 +16,7 @@
       <option value="restore">Khôi phục</option>
     </select>
 
-    <button class="btn btn-primary btn-sm disabled check-all-submit-btn">Thực hiện</button>
+    <button type="submit" class="btn btn-primary btn-sm check-all-submit-btn" disabled>Thực hiện</button>
   </div>
 
   <table class="table mt-4">
@@ -136,23 +136,30 @@
       };
     });
 
-    checkAllSubmitBtn.onsubmit = function (e) {
+    containerForm.onsubmit = function (e) {
       const isSubmitable = document.querySelectorAll('input[name="coureIds[]"]:checked').length > 0;
+      const actionSelected = containerForm.action.value;
 
-      if (!isSubmitable) {
+      if (!isSubmitable || !actionSelected) {
         e.preventDefault();
       }
     };
 
     // Re-render Check all submit button
     function renderCheckAllSubmitBtn() {
-      var checkedCount = document.querySelectorAll('input[name="coureIds[]"]:checked').length;
+      const checkedCount = document.querySelectorAll('input[name="coureIds[]"]:checked').length;
+      const actionSelected = containerForm.action.value;
 
-      if (checkedCount > 0) {
-        checkAllSubmitBtn.classList.remove('disabled');  // bỏ class disabled
+      if (checkedCount > 0 && actionSelected) {
+        checkAllSubmitBtn.disabled = false;
       } else {
-        checkAllSubmitBtn.classList.add('disabled');     // thêm lại class disabled
+        checkAllSubmitBtn.disabled = true;
       }
     }
+
+    // Lắng nghe sự thay đổi của dropdown action
+    containerForm.action.addEventListener('change', function() {
+      renderCheckAllSubmitBtn();
+    });
   });
 </script>
